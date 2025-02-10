@@ -77,6 +77,7 @@ stdenvNoCC.mkDerivation {
     '';
     homepage = "https://beeper.com";
     license = licenses.unfree;
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     mainProgram = "beeper";
     platforms = [ "x86_64-linux" ];
   };
