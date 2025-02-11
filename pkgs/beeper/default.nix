@@ -36,12 +36,10 @@ appimageTools.wrapAppImage {
 
   extraInstallCommands = ''
     mkdir -p $out/share/beeper
-    cp -a ${appimageContents}/locales $out/share/beeper
-    cp -a ${appimageContents}/resources $out/share/beeper
     cp -a ${appimageContents}/usr/share/icons $out/share/
     install -Dm 644 ${appimageContents}/beepertexts.desktop -t $out/share/applications/
 
-    substituteInPlace $out/share/applications/beepertexts.desktop --replace "AppRun" "beeper"
+    substituteInPlace $out/share/applications/beepertexts.desktop --replace-fail "AppRun" "beeper"
 
     . ${makeWrapper}/nix-support/setup-hook
     wrapProgram $out/bin/beeper \
@@ -66,7 +64,7 @@ appimageTools.wrapAppImage {
     });
   };
 
-  meta = with lib; {
+  meta ={
     description = "Universal chat app";
     longDescription = ''
       Beeper is a universal chat app. With Beeper, you can send
@@ -74,7 +72,7 @@ appimageTools.wrapAppImage {
       many different chat networks.
     '';
     homepage = "https://beeper.com";
-    license = licenses.unfree;
+    license = lib.licenses.unfree;
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     mainProgram = "beeper";
     platforms = [ "x86_64-linux" ];
