@@ -15,6 +15,7 @@
   overlays = import ./overlays; # nixpkgs overlays
 
   beeper = pkgs.callPackage ./pkgs/beeper { };
+  deepdwn = pkgs.callPackage ./pkgs/deepdwn { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
 }
