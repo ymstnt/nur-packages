@@ -1,6 +1,5 @@
 {
   lib,
-  stdenvNoCC,
   fetchurl,
   appimageTools,
   makeWrapper,
@@ -16,27 +15,20 @@ let
     url = "https://beeper-desktop.download.beeper.com/builds/Beeper-${version}.AppImage";
     hash = "sha256-7YXqckfij6tv8sjgMvv07RqZNtyVZgprmH2d/APMoi8=";
   };
-  appimage = appimageTools.wrapType2 {
-    inherit version pname src;
-    extraPkgs = pkgs: [ pkgs.libsecret ];
-  };
-  appimageContents = appimageTools.extractType2 {
-    inherit version pname src;
+
+  appimageContents = appimageTools.extract {
+    inherit pname version src;
   };
 in
-stdenvNoCC.mkDerivation {
+
+appimageTools.wrapAppImage {
   inherit pname version;
 
-  src = appimage;
+  src = appimageContents;
 
-  nativeBuildInputs = [ makeWrapper ];
+  extraPkgs = pkgs: [ pkgs.libsecret ];
 
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-    cp bin/beeper $out/bin/beeper
-
+  extraInstallCommands = ''
     mkdir -p $out/share/beeper
     cp -a ${appimageContents}/locales $out/share/beeper
     cp -a ${appimageContents}/resources $out/share/beeper
@@ -45,11 +37,10 @@ stdenvNoCC.mkDerivation {
 
     substituteInPlace $out/share/applications/beepertexts.desktop --replace "AppRun" "beeper"
 
+    . ${makeWrapper}/nix-support/setup-hook
     wrapProgram $out/bin/beeper \
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}} --no-update" \
       --set APPIMAGE beeper
-
-    runHook postInstall
   '';
 
   passthru = {
