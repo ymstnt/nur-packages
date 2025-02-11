@@ -46,7 +46,8 @@ stdenvNoCC.mkDerivation {
     substituteInPlace $out/share/applications/beepertexts.desktop --replace "AppRun" "beeper"
 
     wrapProgram $out/bin/beeper \
-      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}} --no-update"
+      --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}} --no-update" \
+      --set APPIMAGE beeper
 
     runHook postInstall
   '';
