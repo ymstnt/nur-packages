@@ -18,6 +18,12 @@ let
 
   appimageContents = appimageTools.extract {
     inherit pname version src;
+
+    postExtract = ''
+      # disable creating a desktop file and icon in the home folder during runtime
+      linuxConfigFilename=$out/resources/app/build/main/linux-*.mjs
+      echo "export function registerLinuxConfig() {}" > $linuxConfigFilename
+    '';
   };
 in
 
