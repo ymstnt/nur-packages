@@ -16,6 +16,7 @@
 
   beeper = pkgs.callPackage ./pkgs/beeper { };
   deepdwn = pkgs.callPackage ./pkgs/deepdwn { };
+  surf = pkgs.callPackage ./pkgs/surf { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
 }
