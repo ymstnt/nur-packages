@@ -3,10 +3,6 @@
   fetchurl,
   appimageTools,
   makeWrapper,
-  writeShellApplication,
-  curl,
-  yq,
-  common-updater-scripts,
 }:
 let
   pname = "beeper";
@@ -46,23 +42,6 @@ appimageTools.wrapAppImage {
       --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}} --no-update" \
       --set APPIMAGE beeper
   '';
-
-  passthru = {
-    updateScript = lib.getExe (writeShellApplication {
-      name = "update-beeper";
-      runtimeInputs = [
-        curl
-        yq
-        common-updater-scripts
-      ];
-      text = ''
-        set -o errexit
-        latestLinux="$(curl -s https://download.todesktop.com/2003241lzgn20jd/latest-linux.yml)"
-        version="$(echo "$latestLinux" | yq -r .version)"
-        update-source-version beeper "$version" "" "https://download.beeper.com/versions/$version/linux/appImage/x64" --source-key=src.src
-      '';
-    });
-  };
 
   meta ={
     description = "Universal chat app";
