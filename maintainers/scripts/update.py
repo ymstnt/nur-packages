@@ -333,7 +333,7 @@ async def check_changes(
             obtain_new_version_output = await check_subprocess_output(
                 "nix-instantiate",
                 "--expr",
-                f"with import ./. {{}}; lib.getVersion {attr_path}",
+                f"with import ./. {{}}; {attr_path}.version",
                 "--eval",
                 "--strict",
                 "--json",

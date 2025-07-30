@@ -20,7 +20,7 @@
 }:
 
 let
-  pkgs = import ./../../default.nix (
+  pkgs = import <nixpkgs> (
     (
       if include-overlays == false then
         { overlays = [ ]; }
@@ -33,6 +33,8 @@ let
       config.allowAliases = false;
     }
   );
+
+  nur-pkgs = import ../../default.nix { };
 
   inherit (pkgs) lib;
 
@@ -170,13 +172,13 @@ let
   # List of packages matched based on the CLI arguments.
   packages =
     if package != null then
-      [ (packageByName package pkgs) ]
+      [ (packageByName package nur-pkgs) ]
     else if predicate != null then
-      packagesWithUpdateScriptMatchingPredicate predicate pkgs
+      packagesWithUpdateScriptMatchingPredicate predicate nur-pkgs
     else if maintainer != null then
-      packagesWithUpdateScriptAndMaintainer maintainer pkgs
+      packagesWithUpdateScriptAndMaintainer maintainer nur-pkgs
     else if path != null then
-      packagesWithUpdateScript path pkgs
+      packagesWithUpdateScript path nur-pkgs
     else
       builtins.throw "No arguments provided.\n\n${helpText}";
 
