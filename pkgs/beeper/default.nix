@@ -24,7 +24,7 @@ let
       echo "export function registerLinuxConfig() {}" > $linuxConfigFilename
 
       # disable auto update
-      sed -i 's/[^=]*\.auto_update_disabled/true/' $out/resources/app/build/main/main-entry-*.mjs
+      sed -i 's/AUTO_UPDATE_DISABLED=.*auto_update_disabled,/AUTO_UPDATE_DISABLED=true,/' $out/resources/app/build/main/main-entry-*.mjs
 
       # prevent updates
       sed -i -E 's/executeDownload\([^)]+\)\{/executeDownload(){return;/g' $out/resources/app/build/main/main-entry-*.mjs
