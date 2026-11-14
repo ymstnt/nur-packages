@@ -22,7 +22,6 @@
   lifeograph = pkgs.callPackage ./pkgs/lifeograph { };
   lunatask = pkgs.callPackage ./pkgs/lunatask { };
   minecraft-console-client = pkgs.callPackage ./pkgs/minecraft-console-client { };
-  surf = pkgs.callPackage ./pkgs/surf { };
   trmnl-preview = pkgs.callPackage ./pkgs/trmnl-preview { };
   uni-week-counter = pkgs.callPackage ./pkgs/uni-week-counter { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
